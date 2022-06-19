@@ -11,6 +11,15 @@
 	],
 	"author": "Gary Tou <gary@garytou.com> (https://garytou.com)",
 	"license": "MIT",
+	"homepage": "https://github.com/garyhtou/toggl-track",
+	"bugs": {
+		"email": "gary@garytou.com",
+		"url": "https://github.com/garyhtou/toggl-track/issues"
+	},
+	"repository": {
+		"type": "giit",
+		"url": "https://github.com/garyhtou/toggl-track.git"
+	},
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
 	"files": [
