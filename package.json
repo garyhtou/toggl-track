@@ -1,6 +1,6 @@
 {
 	"name": "toggl-track",
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"description": "A TypeScript client for the Toogl Track API (v9)",
 	"keywords": [
 		"toggl",
