@@ -9,7 +9,7 @@ export class TimeEntry {
 	 *
 	 * https://developers.track.toggl.com/docs/api/time_entry#get-timeentries
 	 */
-	public async get(query?: {
+	public async list(query?: {
 		before?: string;
 		since?: string;
 		startDate?: Date | string;

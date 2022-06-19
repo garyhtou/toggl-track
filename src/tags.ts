@@ -9,7 +9,7 @@ export class Tags {
 	 *
 	 * https://developers.track.toggl.com/docs/api/tags#get-tags
 	 */
-	public async get(workspaceId: number) {
+	public async list(workspaceId: number) {
 		return this.toggl.request(`workspaces/${workspaceId}/tags`);
 	}
 
