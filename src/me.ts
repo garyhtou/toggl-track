@@ -31,7 +31,7 @@ export class Me {
 	}) {
 		return this.toggl.request('me', {
 			method: 'PUT',
-			body: body,
+			body,
 		});
 	}
 

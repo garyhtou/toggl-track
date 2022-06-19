@@ -20,7 +20,7 @@ export class Toggl {
 				'Content-Type': 'application/json',
 				Authorization: this.authHeader(auth),
 			},
-			baseURL: baseURL,
+			baseURL,
 			...axiosConfig,
 		});
 	}
@@ -33,14 +33,16 @@ export class Toggl {
 			method = 'GET',
 			axiosConfig,
 		}: {
-			body?: Object;
+			body?: object;
 			query?: Record<string, string | number | boolean | null | undefined>;
 			method?: string;
 			axiosConfig?: any;
 		} = {}
 	) {
 		const normalizedQuery: Record<string, string> = {};
-		for (let key in query) {
+		for (const key in query) {
+			if (!query.hasOwnProperty(key)) continue;
+
 			const val = query[key];
 			if (val === undefined || val === null) continue;
 
@@ -52,8 +54,8 @@ export class Toggl {
 			: endpoint;
 
 		return this.axios.request({
-			url: url,
-			method: method,
+			url,
+			method,
 			data: body,
 			...axiosConfig,
 		});
