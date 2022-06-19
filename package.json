@@ -2,6 +2,13 @@
 	"name": "toggl-track",
 	"version": "0.1.1",
 	"description": "A TypeScript client for the Toogl Track API (v9)",
+	"keywords": [
+		"toggl",
+		"toggli track",
+		"time tracking",
+		"toggl api",
+		"typescript"
+	],
 	"author": "Gary Tou <gary@garytou.com> (https://garytou.com)",
 	"license": "MIT",
 	"main": "lib/index.js",
