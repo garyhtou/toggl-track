@@ -19,7 +19,7 @@ export class Me {
 	 *
 	 * https://developers.track.toggl.com/docs/api/me#put-me
 	 */
-	public async put(body: {
+	public async update(body: {
 		beginningOfWeek?: number;
 		countryId?: number;
 		currentPassword?: string;

@@ -107,7 +107,7 @@ export class TimeEntry {
 		);
 	}
 
-	private formatTimeEntryBody(body?: TimeEntryBody) {
+	protected formatTimeEntryBody(body?: TimeEntryBody) {
 		return {
 			billable: body?.billable,
 			created_with: body?.createdWith,
