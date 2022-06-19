@@ -103,10 +103,7 @@ export class Me {
 		 *
 		 * https://developers.track.toggl.com/docs/api/me#get-logged
 		 */
-		verify: async () => {
-			return this.toggl.request('me/lost_passwords');
-		},
-
+		verify: () => this.toggl.request('me/lost_passwords'),
 		/**
 		 * POST LostPassword
 		 * Handles lost password request confirmation.
