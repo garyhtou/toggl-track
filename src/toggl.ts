@@ -31,7 +31,7 @@ export class Toggl {
 		});
 	}
 
-	public async request(
+	public async request<T = any>(
 		endpoint: string,
 		{
 			body,
@@ -59,7 +59,7 @@ export class Toggl {
 			? endpoint + `?${params.toString()}`
 			: endpoint;
 
-		return this.axios.request({
+		return this.axios.request<T>({
 			url,
 			method,
 			data: body,

@@ -29,16 +29,19 @@ export class Projects {
 				userId?: number;
 			}
 		) => {
-			return this.toggl.request(`workspaces/${workspaceId}/project_users`, {
-				method: 'POST',
-				body: {
-					labour_cost: body?.labourCost,
-					manager: body?.manager,
-					postedFields: body?.postedFields, // this is camalCase according to the API docs
-					project_id: body?.projectId,
-					user_id: body?.userId,
-				},
-			});
+			return this.toggl.request<UserAddResponse>(
+				`workspaces/${workspaceId}/project_users`,
+				{
+					method: 'POST',
+					body: {
+						labour_cost: body?.labourCost,
+						manager: body?.manager,
+						postedFields: body?.postedFields, // this is camalCase according to the API docs
+						project_id: body?.projectId,
+						user_id: body?.userId,
+					},
+				}
+			);
 		},
 
 		/**
@@ -47,7 +50,7 @@ export class Projects {
 		 *
 		 * https://developers.track.toggl.com/docs/api/projects#patch-patch-project-users-from-workspace
 		 */
-		patch: (workspaceId: number, query: { projectUserIds: number[] }) => {
+		set: (workspaceId: number, query: { projectUserIds: number[] }) => {
 			const projectUserIdsString = query.projectUserIds.join(',');
 			return this.toggl.request(`workspaces/${workspaceId}/project_users`, {
 				method: 'PATCH',
@@ -72,7 +75,7 @@ export class Projects {
 				postedFields?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
 			}
 		) => {
-			return this.toggl.request(
+			return this.toggl.request<UserUpdateResponse>(
 				`workspaces/${workspaceId}/project_users/${projectUserId}`,
 				{
 					method: 'PUT',
@@ -150,10 +153,13 @@ export class Projects {
 	 * https://developers.track.toggl.com/docs/api/projects#post-workspaceprojects
 	 */
 	public async create(workspaceId: number, body?: WorkspaceProjectBody) {
-		return this.toggl.request(`workspaces/${workspaceId}/projects`, {
-			method: 'POST',
-			body: this.formatWorkspaceProjectBody(body),
-		});
+		return this.toggl.request<CreateWorkspaceProjectResponse>(
+			`workspaces/${workspaceId}/projects`,
+			{
+				method: 'POST',
+				body: this.formatWorkspaceProjectBody(body),
+			}
+		);
 	}
 
 	/**
@@ -171,7 +177,7 @@ export class Projects {
 		}
 	) {
 		const projectIdsString = projectIds.join(',');
-		return this.toggl.request(
+		return this.toggl.request<UpdateBulkResponse>(
 			`workspaces/${workspaceId}/projects/${projectIdsString}`,
 			{
 				method: 'PATCH',
@@ -190,7 +196,7 @@ export class Projects {
 	 * https://developers.track.toggl.com/docs/api/projects#get-workspaceproject
 	 */
 	public async get(workspaceId: number, projectId: number) {
-		return this.toggl.request(
+		return this.toggl.request<GetResponse>(
 			`workspaces/${workspaceId}/projects/${projectId}`
 		);
 	}
@@ -206,7 +212,7 @@ export class Projects {
 		projectId: number,
 		body?: WorkspaceProjectBody
 	) {
-		return this.toggl.request(
+		return this.toggl.request<UpdateResponse>(
 			`workspaces/${workspaceId}/projects/${projectId}`,
 			{
 				method: 'POST',
@@ -269,3 +275,53 @@ export type WorkspaceProjectBody = {
 	templateId?: number;
 	// cid?: number; // Use `clientId` instead
 };
+
+export type UserAddResponse = {
+	at: string;
+	gid: number;
+	group_id: number;
+	id: number;
+	labour_cost: number;
+	manager: boolean;
+	project_id: number;
+	user_id: number;
+	workspace_id: number;
+};
+
+export type UserUpdateResponse = UserAddResponse;
+
+export type CreateWorkspaceProjectResponse = {
+	active: boolean;
+	actual_bours: number;
+	at: string;
+	auto_estimates: boolean;
+	billable: boolean;
+	cid: number;
+	client_id: number;
+	color: string;
+	created_at: string;
+	currency: string;
+	current_period: {
+		end_date: string;
+		start_date: string;
+	};
+	estimated_hours: number;
+	foreign_id: string;
+	id: number;
+	is_private: boolean;
+	name: string;
+	recurring: boolean;
+	recurring_parameters: string[]; // NOTE: Toggl's API docs does not specify the type
+	server_deleted_at: string;
+	template: boolean;
+	wid: number;
+	workspace_id: number;
+};
+
+export type UpdateBulkResponse = {
+	failure: any; // NOTE: Toggl's API docs does not specify the type
+	success: any; // NOTE: Toggl's API docs does not specify the type
+};
+
+export type GetResponse = CreateWorkspaceProjectResponse;
+export type UpdateResponse = CreateWorkspaceProjectResponse;

@@ -10,7 +10,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-me
 	 */
 	public async get() {
-		return this.toggl.request('me');
+		return await this.toggl.request<GetResponse>('me');
 	}
 
 	/**
@@ -29,7 +29,7 @@ export class Me {
 		password?: string;
 		timezone?: string;
 	}) {
-		return this.toggl.request('me', {
+		return this.toggl.request<UpdateResponse>('me', {
 			method: 'PUT',
 			body: {
 				beginning_of_week: body.beginningOfWeek,
@@ -83,7 +83,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-users-last-known-location
 	 */
 	public async location() {
-		return this.toggl.request('me/location');
+		return this.toggl.request<LocationResponse>('me/location');
 	}
 
 	/**
@@ -227,3 +227,32 @@ export class Me {
 		return this.toggl.request('me/web-timer');
 	}
 }
+
+export type GetResponse = {
+	api_token?: string;
+	at: string; // format: date-time
+	beginning_of_week: number;
+	country_id: number;
+	created_at: string; // format: date-time
+	default_workspace_id: number;
+	email: string; // format: email
+	fullname: string;
+	id: number;
+	image_url: string;
+	intercom_hash?: string;
+	openid_email: string; // format: email
+	openid_enabled: boolean;
+	options: any;
+	timezone: string;
+	updated_at: string; // format: date-time
+};
+
+export type UpdateResponse = GetResponse;
+
+export type LocationResponse = {
+	city: string;
+	city_lat_long: string;
+	country_code: string;
+	country_name: string;
+	state: string;
+};

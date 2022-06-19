@@ -42,10 +42,13 @@ export class TimeEntry {
 	 * https://developers.track.toggl.com/docs/api/time_entry#post-timeentries
 	 */
 	public async create(workspaceId: number, body?: TimeEntryBody) {
-		return this.toggl.request(`workspaces/${workspaceId}/time_entries/`, {
-			method: 'POST',
-			body: this.formatTimeEntryBody(body),
-		});
+		return this.toggl.request<CreateResponse>(
+			`workspaces/${workspaceId}/time_entries/`,
+			{
+				method: 'POST',
+				body: this.formatTimeEntryBody(body),
+			}
+		);
 	}
 
 	/**
@@ -63,7 +66,7 @@ export class TimeEntry {
 		}
 	) {
 		const timeEntryIdsString = timeEntryIds.join(',');
-		return this.toggl.request(
+		return this.toggl.request<UpdateBulkResponse>(
 			`workspaces/${workspaceId}/time_entries/${timeEntryIdsString}`,
 			{
 				method: 'PATCH',
@@ -83,7 +86,7 @@ export class TimeEntry {
 		workspaceId: number,
 		body?: TimeEntryBody
 	) {
-		return this.toggl.request(
+		return this.toggl.request<UpdateResponse>(
 			`workspaces/${workspaceId}/time_entries/${timeEntryId}`,
 			{
 				method: 'PUT',
@@ -153,3 +156,32 @@ export type TimeEntryBody = {
 	// uid?: number; // Use `userId` instead
 	// wid?: number; // Use `workspaceId` instead
 };
+
+export type CreateResponse = {
+	at: string;
+	billable: boolean;
+	description: string;
+	duration: number; // DurationInSeconds for running entries should be -1 * (Unix start time).
+	duronly: boolean;
+	id: number;
+	pid: number;
+	project_id: number;
+	server_deleted_at: string;
+	start: string;
+	stop: string;
+	tag_ids: number[]; // NOTE: Toggl's API docs does not specify the type
+	tags: string[]; // NOTE: Toggl's API docs does not specify the type
+	task_id: number;
+	tid: number;
+	uid: number;
+	user_id: number;
+	wid: number;
+	workspace_id: number;
+};
+
+export type UpdateBulkResponse = {
+	failure: any; // NOTE: Toggl's API docs does not specify the type
+	success: any; // NOTE: Toggl's API docs does not specify the type
+};
+
+export type UpdateResponse = CreateResponse;
