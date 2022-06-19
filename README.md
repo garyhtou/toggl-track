@@ -9,6 +9,8 @@ A TypeScript client for the Toogl Track API (v9). At the moment, only the follow
 - [`Tags`](https://developers.track.toggl.com/docs/api/tags)
 - More to come!
 
+This is a work in progress! Expect breaking changes until version `1.0.0`.
+
 ### Install
 
 ```bash
