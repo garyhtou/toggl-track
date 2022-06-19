@@ -4,7 +4,7 @@ import { TimeEntry } from './timeEntry';
 
 export class Toggl {
 	public me = new Me(this);
-	public timeEnty = new TimeEntry(this);
+	public timeEntry = new TimeEntry(this);
 
 	private axios: Axios;
 

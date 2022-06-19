@@ -15,7 +15,7 @@ export class TimeEntry {
 		startDate?: Date | string;
 		endDate?: Date | string;
 	}) {
-		return this.toggl.request('me/time_entires', {
+		return this.toggl.request('me/time_entries', {
 			query: {
 				before: query?.before,
 				since: query?.since,
@@ -32,7 +32,7 @@ export class TimeEntry {
 	 * https://developers.track.toggl.com/docs/api/time_entry#get-get-current-time-entry
 	 */
 	public async current() {
-		return this.toggl.request('me/time_entires/current');
+		return this.toggl.request('me/time_entries/current');
 	}
 
 	/**
@@ -42,7 +42,7 @@ export class TimeEntry {
 	 * https://developers.track.toggl.com/docs/api/time_entry#post-timeentries
 	 */
 	public async create(workspaceId: number, body?: TimeEntryBody) {
-		return this.toggl.request(`workspaces/${workspaceId}/time_entires/`, {
+		return this.toggl.request(`workspaces/${workspaceId}/time_entries/`, {
 			method: 'POST',
 			body: this.formatTimeEntryBody(body),
 		});
@@ -64,7 +64,7 @@ export class TimeEntry {
 	) {
 		const timeEntryIdsString = timeEntryIds.join(',');
 		return this.toggl.request(
-			`workspaces/${workspaceId}/time_entires/${timeEntryIdsString}`,
+			`workspaces/${workspaceId}/time_entries/${timeEntryIdsString}`,
 			{
 				method: 'PATCH',
 				body,
@@ -84,7 +84,7 @@ export class TimeEntry {
 		body?: TimeEntryBody
 	) {
 		return this.toggl.request(
-			`workspaces/${workspaceId}/time_entires/${timeEntryId}`,
+			`workspaces/${workspaceId}/time_entries/${timeEntryId}`,
 			{
 				method: 'PUT',
 				body: this.formatTimeEntryBody(body),
@@ -100,7 +100,7 @@ export class TimeEntry {
 	 */
 	public async delete(timeEntryId: number, workspaceId: number) {
 		return this.toggl.request(
-			`workspaces/${workspaceId}/time_entires/${timeEntryId}`,
+			`workspaces/${workspaceId}/time_entries/${timeEntryId}`,
 			{
 				method: 'DELETE',
 			}
