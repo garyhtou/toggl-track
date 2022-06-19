@@ -1,14 +1,16 @@
 import { Axios } from 'axios';
 import { Me } from './me';
-import { Tags } from './tags';
 import { TimeEntry } from './timeEntry';
+import { Invitations } from './invitations';
 import { Projects } from './projects';
+import { Tags } from './tags';
 
 export class Toggl {
 	public me = new Me(this);
-	public tags = new Tags(this);
 	public timeEntry = new TimeEntry(this);
+	public invitations = new Invitations(this);
 	public projects = new Projects(this);
+	public tags = new Tags(this);
 
 	private axios: Axios;
 

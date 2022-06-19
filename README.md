@@ -4,6 +4,7 @@ A TypeScript client for the Toogl Track API (v9). Note: at the moment, only the 
 
 - [`Me`](https://developers.track.toggl.com/docs/api/me)
 - [`Time entry`](https://developers.track.toggl.com/docs/api/time_entry)
+- [`Invitations`](https://developers.track.toggl.com/docs/api/invitations)
 - [`Projects`](https://developers.track.toggl.com/docs/api/projects)
 - [`Tags`](https://developers.track.toggl.com/docs/api/tags)
 
