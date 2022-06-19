@@ -1,6 +1,6 @@
 {
 	"name": "toggl-track",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"description": "A TypeScript client for the Toogl Track API (v9)",
 	"author": "Gary Tou <gary@garytou.com> (https://garytou.com)",
 	"license": "MIT",
@@ -21,12 +21,14 @@
 	},
 	"prettier": "@garyhtou/prettier-config",
 	"devDependencies": {
+		"@types/node": "^17.0.42",
 		"prettier": "^2.6.2",
 		"tslint": "^6.1.3",
 		"tslint-config-prettier": "^1.18.0",
 		"typescript": "^4.7.3"
 	},
 	"dependencies": {
-		"@garyhtou/prettier-config": "^1.0.1"
+		"@garyhtou/prettier-config": "^1.0.1",
+		"axios": "^0.27.2"
 	}
 }

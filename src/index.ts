@@ -1,5 +1,2 @@
-export const Greeter = (name: string) => `Hello ${name}`;
-
-export class Toggl {
-	constructor() {}
-}
+export { Toggl } from './toggl';
+export { AuthConfig, BasicAuth, ApiToken } from './toggl';
