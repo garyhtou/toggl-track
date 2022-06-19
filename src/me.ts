@@ -31,7 +31,16 @@ export class Me {
 	}) {
 		return this.toggl.request('me', {
 			method: 'PUT',
-			body,
+			body: {
+				beginning_of_week: body.beginningOfWeek,
+				country_id: body.countryId,
+				current_password: body.currentPassword,
+				default_workspace_id: body.defaultWorkspaceId,
+				email: body.email,
+				fullname: body.fullname,
+				password: body.password,
+				timezone: body.timezone,
+			},
 		});
 	}
 
@@ -111,7 +120,11 @@ export class Me {
 		}) => {
 			return this.toggl.request('me/lost_passwords/confirm', {
 				method: 'POST',
-				body,
+				body: {
+					code: body.code,
+					password: body.password,
+					user_id: body.userId,
+				},
 			});
 		},
 
@@ -121,10 +134,12 @@ export class Me {
 		 *
 		 * https://developers.track.toggl.com/docs/api/me#post-lostpassword-1
 		 */
-		reset: async (loginCode: string, body: { email?: string }) => {
-			return this.toggl.request(`me/lost_passwords/${loginCode}`, {
+		reset: async (tokenCode: string, body: { email?: string }) => {
+			return this.toggl.request(`me/lost_passwords/${tokenCode}`, {
 				method: 'POST',
-				body,
+				body: {
+					email: body.email,
+				},
 			});
 		},
 	};
@@ -190,7 +205,7 @@ export class Me {
 		return this.toggl.request('me/tasks', {
 			query: {
 				since: query?.since?.toString(),
-				includeNotActivei: query?.includeNotActive,
+				include_not_active: query?.includeNotActive,
 			},
 		});
 	}
