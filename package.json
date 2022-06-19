@@ -4,7 +4,7 @@
 	"description": "A TypeScript client for the Toogl Track API (v9)",
 	"keywords": [
 		"toggl",
-		"toggli track",
+		"toggl track",
 		"time tracking",
 		"toggl api",
 		"typescript"
