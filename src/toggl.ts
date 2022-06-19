@@ -64,12 +64,11 @@ export class Toggl {
 	}
 
 	private authHeader(auth: AuthConfig) {
-		const basicAuth = auth.basicAuth;
-		const apiToken = auth.apiToken;
+		const isToken = 'token' in auth;
 
-		const authSecret = apiToken
-			? `${apiToken}:api_token`
-			: `${basicAuth?.email}:${basicAuth?.password}`;
+		const authSecret = isToken
+			? `${auth.token}:api_token`
+			: `${auth.email}:${auth.password}`;
 		const authBase64 = Buffer.from(authSecret).toString('base64');
 		const authHeader = `Basic ${authBase64}`;
 
@@ -81,5 +80,5 @@ export type BasicAuth = {
 	email: string;
 	password: string;
 };
-export type ApiToken = string;
-export type AuthConfig = { basicAuth?: BasicAuth; apiToken?: ApiToken };
+export type ApiToken = { token: string };
+export type AuthConfig = BasicAuth | ApiToken;
