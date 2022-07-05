@@ -1,4 +1,7 @@
+import { ExecOptionsWithStringEncoding } from 'child_process';
 import { Toggl } from './toggl';
+import { IWorkspaceProject } from './projects';
+import { ITag } from './tags';
 
 export class Me {
 	constructor(protected toggl: Toggl) {}
@@ -10,7 +13,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-me
 	 */
 	public async get() {
-		return await this.toggl.request<GetResponse>('me');
+		return await this.toggl.request<IMe>('me');
 	}
 
 	/**
@@ -29,7 +32,7 @@ export class Me {
 		password?: string;
 		timezone?: string;
 	}) {
-		return this.toggl.request<UpdateResponse>('me', {
+		return this.toggl.request<IMe>('me', {
 			method: 'PUT',
 			body: {
 				beginning_of_week: body.beginningOfWeek,
@@ -51,7 +54,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-clients
 	 */
 	public async clients() {
-		return this.toggl.request('me/clients');
+		return this.toggl.request<IClient[]>('me/clients');
 	}
 
 	/**
@@ -73,7 +76,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-features
 	 */
 	public async features() {
-		return this.toggl.request('me/features');
+		return this.toggl.request<IWorkspaceFeatures[]>('me/features');
 	}
 
 	/**
@@ -83,7 +86,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-users-last-known-location
 	 */
 	public async location() {
-		return this.toggl.request<LocationResponse>('me/location');
+		return this.toggl.request<ILocation>('me/location');
 	}
 
 	/**
@@ -148,7 +151,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-organizations-that-a-user-is-part-of
 	 */
 	public async organizations() {
-		return this.toggl.request('me/organizations');
+		return this.toggl.request<IOrganization[]>('me/organizations');
 	}
 
 	/**
@@ -158,7 +161,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-projects
 	 */
 	public async projects(query?: { includeArchived?: boolean }) {
-		return this.toggl.request('me/projects', {
+		return this.toggl.request<IWorkspaceProject[]>('me/projects', {
 			query: {
 				include_archived: query?.includeArchived,
 			},
@@ -172,7 +175,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-projectspaginated
 	 */
 	public async projectsPaginated(query?: { startProjectId?: string }) {
-		return this.toggl.request('me/projects/paginated', {
+		return this.toggl.request<IWorkspaceProject[]>('me/projects/paginated', {
 			query: {
 				start_project_id: query?.startProjectId,
 			},
@@ -186,7 +189,7 @@ export class Me {
 	 * https://developers.track.toggl.com/docs/api/me#get-tags
 	 */
 	public async tags() {
-		return this.toggl.request('me/tags');
+		return this.toggl.request<ITag[]>('me/tags');
 	}
 
 	/**
@@ -228,7 +231,7 @@ export class Me {
 	}
 }
 
-export type GetResponse = {
+export interface IMe {
 	api_token?: string;
 	at: string; // format: date-time
 	beginning_of_week: number;
@@ -245,14 +248,53 @@ export type GetResponse = {
 	options: any;
 	timezone: string;
 	updated_at: string; // format: date-time
-};
+}
 
-export type UpdateResponse = GetResponse;
-
-export type LocationResponse = {
+export interface ILocation {
 	city: string;
 	city_lat_long: string;
 	country_code: string;
 	country_name: string;
 	state: string;
-};
+}
+
+export interface IClient {
+	id: number;
+	wid: number;
+	name: string;
+	at: string; // format: date-time
+}
+
+export interface IFeature {
+	feature_id: number;
+	name: string;
+	enabled: boolean;
+}
+
+export interface IWorkspaceFeatures {
+	workspace_id: number;
+	features: IFeature[];
+}
+
+export interface IOrganization {
+	id: number;
+	name: string;
+	pricing_plan_id: number;
+	created_at: string; // format: date-time
+	at: string; // format: date-time
+	server_deleted_at: null | string; // format: date-time
+	is_multi_workspace_enabled: boolean;
+	suspended_at: null | string; // format: date-time
+	user_count: number;
+	trial_info: {
+		trial: boolean;
+		trial_available: boolean;
+		trial_end_date: null | string; // format:date-time
+		next_payment_date: null | string; // format:date-time
+		last_pricing_plan_id: null | number;
+	};
+	is_chargify: boolean;
+	max_workspaces: number;
+	admin: boolean;
+	owner: boolean;
+}

@@ -19,7 +19,7 @@ export class Toggl {
 		baseURL = 'https://api.track.toggl.com/api/v9',
 		axiosConfig,
 	}: {
-		auth: AuthConfig;
+		auth: Auth;
 		baseURL?: string;
 		axiosConfig?: any;
 	}) {
@@ -33,7 +33,7 @@ export class Toggl {
 		});
 	}
 
-	public async request<T = any>(
+	public async request<T = unknown>(
 		endpoint: string,
 		{
 			body,
@@ -61,15 +61,28 @@ export class Toggl {
 			? endpoint + `?${params.toString()}`
 			: endpoint;
 
-		return this.axios.request<T>({
+		const { data } = await this.axios.request<T>({
 			url,
 			method,
 			data: body,
+			headers: {
+				'Content-Type': 'application/json',
+			},
 			...axiosConfig,
 		});
+
+		// Sometimes Axios returns data as a string, rather than parsing it as JSON.
+		// This seems to be a bug with Axios???
+		if (typeof data == 'string') {
+			try {
+				return JSON.parse(data as unknown as string);
+			} catch (e) {}
+		}
+
+		return data;
 	}
 
-	private authHeader(auth: AuthConfig) {
+	private authHeader(auth: Auth) {
 		const isToken = 'token' in auth;
 
 		const authSecret = isToken
@@ -82,9 +95,11 @@ export class Toggl {
 	}
 }
 
-export type BasicAuth = {
+export interface BasicAuth {
 	email: string;
 	password: string;
-};
-export type ApiToken = { token: string };
-export type AuthConfig = BasicAuth | ApiToken;
+}
+export interface ApiToken {
+	token: string;
+}
+export type Auth = BasicAuth | ApiToken;

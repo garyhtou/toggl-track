@@ -15,7 +15,7 @@ export class TimeEntry {
 		startDate?: Date | string;
 		endDate?: Date | string;
 	}) {
-		return this.toggl.request('me/time_entries', {
+		return this.toggl.request<ITimeEntry[]>('me/time_entries', {
 			query: {
 				before: query?.before,
 				since: query?.since,
@@ -32,7 +32,7 @@ export class TimeEntry {
 	 * https://developers.track.toggl.com/docs/api/time_entry#get-get-current-time-entry
 	 */
 	public async current() {
-		return this.toggl.request('me/time_entries/current');
+		return this.toggl.request<ITimeEntry>('me/time_entries/current');
 	}
 
 	/**
@@ -41,12 +41,12 @@ export class TimeEntry {
 	 *
 	 * https://developers.track.toggl.com/docs/api/time_entry#post-timeentries
 	 */
-	public async create(workspaceId: number, body?: TimeEntryBody) {
-		return this.toggl.request<CreateResponse>(
+	public async create(workspaceId: number, body?: ITimeEntryParams) {
+		return this.toggl.request<ITimeEntry>(
 			`workspaces/${workspaceId}/time_entries/`,
 			{
 				method: 'POST',
-				body: this.formatTimeEntryBody(body),
+				body: body,
 			}
 		);
 	}
@@ -66,7 +66,7 @@ export class TimeEntry {
 		}
 	) {
 		const timeEntryIdsString = timeEntryIds.join(',');
-		return this.toggl.request<UpdateBulkResponse>(
+		return this.toggl.request<IUpdateBulkResponse>(
 			`workspaces/${workspaceId}/time_entries/${timeEntryIdsString}`,
 			{
 				method: 'PATCH',
@@ -84,13 +84,13 @@ export class TimeEntry {
 	public async update(
 		timeEntryId: number,
 		workspaceId: number,
-		body?: TimeEntryBody
+		body?: ITimeEntryParams
 	) {
-		return this.toggl.request<UpdateResponse>(
+		return this.toggl.request<ITimeEntry>(
 			`workspaces/${workspaceId}/time_entries/${timeEntryId}`,
 			{
 				method: 'PUT',
-				body: this.formatTimeEntryBody(body),
+				body: body,
 			}
 		);
 	}
@@ -109,55 +109,33 @@ export class TimeEntry {
 			}
 		);
 	}
-
-	protected formatTimeEntryBody(body?: TimeEntryBody) {
-		return {
-			billable: body?.billable,
-			created_with: body?.createdWith,
-			description: body?.description,
-			duration: body?.duration,
-			duronly: body?.duronly,
-			postedFields: body?.postedFields, // this is camalCase according to the API docs
-			project_id: body?.projectId,
-			start: body?.start,
-			start_date: body?.startDate,
-			stop: body?.stop,
-			stop_date: body?.stopDate,
-			tag_action: body?.tagAction,
-			tag_ids: body?.tagIds,
-			tags: body?.tags,
-			task_id: body?.taskId,
-			user_id: body?.userId,
-			workspace_id: body?.workspaceId,
-		};
-	}
 }
 
-export type TimeEntryBody = {
+export interface ITimeEntryParams {
 	billable?: boolean;
-	createdWith?: string;
+	created_with?: string;
 	description?: string;
 	duration?: number;
 	duronly?: boolean;
 	postedFields?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
-	projectId?: number;
+	project_id?: number;
 	start?: string;
-	startDate?: string;
+	start_date?: string;
 	stop?: string;
-	stopDate?: string;
-	tagAction?: string;
-	tagIds?: number[]; // NOTE: Toggl's API docs says the type is 'undefined'
+	stop_date?: string;
+	tag_action?: string;
+	tag_ids?: number[]; // NOTE: Toggl's API docs says the type is 'undefined'
 	tags?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
-	taskId?: number;
-	userId?: number;
-	workspaceId?: number;
+	task_id?: number;
+	user_id?: number;
+	workspace_id?: number;
 	// pid?: number; // Use `projectId` instead
 	// tid?: number; // Use `taskId` instead
 	// uid?: number; // Use `userId` instead
 	// wid?: number; // Use `workspaceId` instead
-};
+}
 
-export type CreateResponse = {
+export interface ITimeEntry {
 	at: string;
 	billable: boolean;
 	description: string;
@@ -169,19 +147,17 @@ export type CreateResponse = {
 	server_deleted_at: string;
 	start: string;
 	stop: string;
-	tag_ids: number[]; // NOTE: Toggl's API docs does not specify the type
-	tags: string[]; // NOTE: Toggl's API docs does not specify the type
-	task_id: number;
+	tag_ids?: number[]; // NOTE: Toggl's API docs does not specify the type
+	tags?: string[]; // NOTE: Toggl's API docs does not specify the type
+	task_id: number | null;
 	tid: number;
 	uid: number;
 	user_id: number;
 	wid: number;
 	workspace_id: number;
-};
+}
 
-export type UpdateBulkResponse = {
+export interface IUpdateBulkResponse {
 	failure: any; // NOTE: Toggl's API docs does not specify the type
 	success: any; // NOTE: Toggl's API docs does not specify the type
-};
-
-export type UpdateResponse = CreateResponse;
+}

@@ -10,7 +10,7 @@ export class Tags {
 	 * https://developers.track.toggl.com/docs/api/tags#get-tags
 	 */
 	public async list(workspaceId: number) {
-		return this.toggl.request(`workspaces/${workspaceId}/tags`);
+		return this.toggl.request<ITag[]>(`workspaces/${workspaceId}/tags`);
 	}
 
 	/**
@@ -25,7 +25,7 @@ export class Tags {
 			name?: string;
 		}
 	) {
-		return this.toggl.request(`workspaces/${workspaceId}/tags`, {
+		return this.toggl.request<ITag>(`workspaces/${workspaceId}/tags`, {
 			method: 'POST',
 			body: {
 				name: body?.name,
@@ -46,7 +46,7 @@ export class Tags {
 			name?: string;
 		}
 	) {
-		return this.toggl.request(`workspaces/${workspaceId}/tags/${tagId}`, {
+		return this.toggl.request<ITag>(`workspaces/${workspaceId}/tags/${tagId}`, {
 			method: 'PUT',
 			body: {
 				name: body?.name,
@@ -65,4 +65,11 @@ export class Tags {
 			method: 'DELETE',
 		});
 	}
+}
+
+export interface ITag {
+	id: number;
+	workspace_id: number;
+	name: string;
+	at: string; // format: date-time
 }

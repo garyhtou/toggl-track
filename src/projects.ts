@@ -11,7 +11,7 @@ export class Projects {
 		 * https://developers.track.toggl.com/docs/api/projects#get-get-workspace-projects-users
 		 */
 		list: (workspaceId: number) =>
-			this.toggl.request(`workspaces/${workspaceId}/project_users`),
+			this.toggl.request<IUser[]>(`workspaces/${workspaceId}/project_users`),
 
 		/**
 		 * POST Add an user into workspace projects users​
@@ -29,7 +29,7 @@ export class Projects {
 				userId?: number;
 			}
 		) => {
-			return this.toggl.request<UserAddResponse>(
+			return this.toggl.request<IUser>(
 				`workspaces/${workspaceId}/project_users`,
 				{
 					method: 'POST',
@@ -75,7 +75,7 @@ export class Projects {
 				postedFields?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
 			}
 		) => {
-			return this.toggl.request<UserUpdateResponse>(
+			return this.toggl.request<IUser>(
 				`workspaces/${workspaceId}/project_users/${projectUserId}`,
 				{
 					method: 'PUT',
@@ -126,24 +126,13 @@ export class Projects {
 			wid?: number;
 		}
 	) {
-		return this.toggl.request(`workspaces/${workspaceId}/projects`, {
-			// NOTE: according to Toggl's API docs, everything here is camalCase
-			body: {
-				active: body?.active,
-				billable: body?.billable,
-				clientIds: body?.clientId,
-				groupIds: body?.groupIds,
-				name: body?.name,
-				onlyTemplates: body?.onlyTemplates,
-				page: body?.page,
-				perPage: body?.perPage,
-				since: body?.since instanceof Date ? body.since.getTime() : body?.since,
-				sortField: body?.sortField,
-				uid: body?.uid,
-				userIds: body?.userIds,
-				wid: body?.wid,
-			},
-		});
+		return this.toggl.request<IWorkspaceProject[]>(
+			`workspaces/${workspaceId}/projects`,
+			{
+				// NOTE: according to Toggl's API docs, everything here is camalCase
+				body: body,
+			}
+		);
 	}
 
 	/**
@@ -152,12 +141,12 @@ export class Projects {
 	 *
 	 * https://developers.track.toggl.com/docs/api/projects#post-workspaceprojects
 	 */
-	public async create(workspaceId: number, body?: WorkspaceProjectBody) {
-		return this.toggl.request<CreateWorkspaceProjectResponse>(
+	public async create(workspaceId: number, body?: IWorkspaceProjectParams) {
+		return this.toggl.request<IWorkspaceProject>(
 			`workspaces/${workspaceId}/projects`,
 			{
 				method: 'POST',
-				body: this.formatWorkspaceProjectBody(body),
+				body: body,
 			}
 		);
 	}
@@ -196,7 +185,7 @@ export class Projects {
 	 * https://developers.track.toggl.com/docs/api/projects#get-workspaceproject
 	 */
 	public async get(workspaceId: number, projectId: number) {
-		return this.toggl.request<GetResponse>(
+		return this.toggl.request<IWorkspaceProject>(
 			`workspaces/${workspaceId}/projects/${projectId}`
 		);
 	}
@@ -210,13 +199,13 @@ export class Projects {
 	public async update(
 		workspaceId: number,
 		projectId: number,
-		body?: WorkspaceProjectBody
+		body?: IWorkspaceProjectParams
 	) {
-		return this.toggl.request<UpdateResponse>(
+		return this.toggl.request<IWorkspaceProject>(
 			`workspaces/${workspaceId}/projects/${projectId}`,
 			{
 				method: 'POST',
-				body: this.formatWorkspaceProjectBody(body),
+				body: body,
 			}
 		);
 	}
@@ -233,50 +222,30 @@ export class Projects {
 			{ method: 'DELETE' }
 		);
 	}
-
-	protected formatWorkspaceProjectBody(body?: WorkspaceProjectBody) {
-		return {
-			active: body?.active,
-			auto_estimates: body?.auto_estimates,
-			billable: body?.billable,
-			client_id: body?.clientId,
-			client_name: body?.clientName,
-			color: body?.color,
-			currency: body?.currency,
-			estimated_hours: body?.estimatedHours,
-			foreign_id: body?.foreignId,
-			is_private: body?.isPrivate,
-			name: body?.name,
-			postedFields: body?.postedFields, // this is camalCase according to the API docs
-			recurring: body?.recurring,
-			recurring_parameters: body?.recurringParameters,
-			template: body?.template,
-			template_id: body?.templateId,
-		};
-	}
 }
 
-export type WorkspaceProjectBody = {
+export interface IWorkspaceProjectParams {
 	active?: boolean;
 	auto_estimates?: boolean;
 	billable?: boolean;
-	clientId?: number;
-	clientName?: string;
+	client_id?: number;
+	client_name?: string;
 	color?: string;
 	currency?: string;
-	estimatedHours?: number;
-	foreignId?: string;
-	isPrivate?: boolean;
+	estimated_hours?: number;
+	foreign_id?: string;
+	is_private?: boolean;
 	name?: string;
 	postedFields?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
+	rate_change_mode?: string;
 	recurring?: boolean;
-	recurringParameters?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
+	recurring_parameters?: string[]; // NOTE: Toggl's API docs says the type is 'undefined'
 	template?: boolean;
-	templateId?: number;
+	template_id?: number;
 	// cid?: number; // Use `clientId` instead
-};
+}
 
-export type UserAddResponse = {
+export interface IUser {
 	at: string;
 	gid: number;
 	group_id: number;
@@ -286,11 +255,9 @@ export type UserAddResponse = {
 	project_id: number;
 	user_id: number;
 	workspace_id: number;
-};
+}
 
-export type UserUpdateResponse = UserAddResponse;
-
-export type CreateWorkspaceProjectResponse = {
+export interface IWorkspaceProject {
 	active: boolean;
 	actual_bours: number;
 	at: string;
@@ -301,12 +268,12 @@ export type CreateWorkspaceProjectResponse = {
 	color: string;
 	created_at: string;
 	currency: string;
-	current_period: {
+	current_period?: {
 		end_date: string;
 		start_date: string;
 	};
 	estimated_hours: number;
-	foreign_id: string;
+	foreign_id?: string;
 	id: number;
 	is_private: boolean;
 	name: string;
@@ -316,12 +283,9 @@ export type CreateWorkspaceProjectResponse = {
 	template: boolean;
 	wid: number;
 	workspace_id: number;
-};
+}
 
-export type UpdateBulkResponse = {
+export interface UpdateBulkResponse {
 	failure: any; // NOTE: Toggl's API docs does not specify the type
 	success: any; // NOTE: Toggl's API docs does not specify the type
-};
-
-export type GetResponse = CreateWorkspaceProjectResponse;
-export type UpdateResponse = CreateWorkspaceProjectResponse;
+}

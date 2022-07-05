@@ -16,7 +16,7 @@ export class Invitations {
 			workspaces?: number[]; // NOTE: Toggl's API docs says the type is 'undefined'
 		}
 	) {
-		return this.toggl.request<CreateResponse>(
+		return this.toggl.request<ICreateResponse>(
 			`organizations/${organizationId}/invitations`,
 			{
 				method: 'POST',
@@ -29,7 +29,7 @@ export class Invitations {
 	}
 }
 
-export type CreateResponse = {
+export interface ICreateResponse {
 	data: any; // NOTE: Toggl's API docs does not specify the type
 	messages: any; // NOTE: Toggl's API docs does not specify the type
-};
+}
