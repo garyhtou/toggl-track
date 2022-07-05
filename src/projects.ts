@@ -130,7 +130,7 @@ export class Projects {
 			`workspaces/${workspaceId}/projects`,
 			{
 				// NOTE: according to Toggl's API docs, everything here is camalCase
-				body: body,
+				body,
 			}
 		);
 	}
@@ -146,7 +146,7 @@ export class Projects {
 			`workspaces/${workspaceId}/projects`,
 			{
 				method: 'POST',
-				body: body,
+				body,
 			}
 		);
 	}
@@ -205,7 +205,7 @@ export class Projects {
 			`workspaces/${workspaceId}/projects/${projectId}`,
 			{
 				method: 'POST',
-				body: body,
+				body,
 			}
 		);
 	}

@@ -73,10 +73,12 @@ export class Toggl {
 
 		// Sometimes Axios returns data as a string, rather than parsing it as JSON.
 		// This seems to be a bug with Axios???
-		if (typeof data == 'string') {
+		if (typeof data === 'string') {
 			try {
 				return JSON.parse(data as unknown as string);
-			} catch (e) {}
+			} catch (e) {
+				// more parse failure
+			}
 		}
 
 		return data;

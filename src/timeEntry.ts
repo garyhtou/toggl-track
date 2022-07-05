@@ -46,7 +46,7 @@ export class TimeEntry {
 			`workspaces/${workspaceId}/time_entries/`,
 			{
 				method: 'POST',
-				body: body,
+				body,
 			}
 		);
 	}
@@ -90,7 +90,7 @@ export class TimeEntry {
 			`workspaces/${workspaceId}/time_entries/${timeEntryId}`,
 			{
 				method: 'PUT',
-				body: body,
+				body,
 			}
 		);
 	}
