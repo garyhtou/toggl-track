@@ -24,7 +24,7 @@ import Toggl from 'toggl-track';
 
 const toggl = new Toggl({
   auth: {
-    token: process.env?.TOGGL_TRACK_API_TOKEN,
+    token: process.env.TOGGL_TRACK_API_TOKEN,
   },
 });
 
