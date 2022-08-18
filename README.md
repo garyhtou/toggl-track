@@ -20,7 +20,7 @@ npm install toggl-track
 ### Usage
 
 ```typescript
-import {Toggl} from 'toggl-track';
+import { Toggl } from 'toggl-track';
 
 const toggl = new Toggl({
   auth: {
