@@ -43,7 +43,7 @@ export class TimeEntry {
 	 */
 	public async create(workspaceId: number, body?: ITimeEntryParams) {
 		return this.toggl.request<ITimeEntry>(
-			`workspaces/${workspaceId}/time_entries/`,
+			`workspaces/${workspaceId}/time_entries`,
 			{
 				method: 'POST',
 				body,
