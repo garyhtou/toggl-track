@@ -64,7 +64,7 @@ export class Toggl {
 		const { data } = await this.axios.request<T>({
 			url,
 			method,
-			data: body,
+			data: JSON.stringify(body),
 			headers: {
 				'Content-Type': 'application/json',
 			},
