@@ -57,7 +57,7 @@ export class Toggl {
 			normalizedQuery[key] = `${val}`; // to string
 		}
 		const params = new URLSearchParams(normalizedQuery);
-		const url = params.keys.length
+		const url = Array.from(params).length
 			? endpoint + `?${params.toString()}`
 			: endpoint;
 
