@@ -119,7 +119,7 @@ export class TimeEntry {
 	public async stop(timeEntryId: number, workspaceId: number) {
 		console.log('stop', timeEntryId, workspaceId);
 		return this.toggl.request<ITimeEntry>(
-			`workspaces/${workspaceId}/time_entries/${timeEntryId}`,
+			`workspaces/${workspaceId}/time_entries/${timeEntryId}/stop`,
 			{
 				method: 'PATCH',
 			}
