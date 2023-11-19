@@ -109,6 +109,22 @@ export class TimeEntry {
 			}
 		);
 	}
+
+	/**
+	 * PATCH TimeEntries​
+	 * Stops a workspace time entry.
+	 *
+	 * https://developers.track.toggl.com/docs/api/time_entries/index.html#patch-stop-timeentry
+	 */
+	public async stop(timeEntryId: number, workspaceId: number) {
+		console.log('stop', timeEntryId, workspaceId);
+		return this.toggl.request<ITimeEntry>(
+			`workspaces/${workspaceId}/time_entries/${timeEntryId}/stop`,
+			{
+				method: 'PATCH',
+			}
+		);
+	}
 }
 
 export interface ITimeEntryParams {
