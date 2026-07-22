@@ -1,6 +1,6 @@
 # Toggl Track Client (v9)
 
-A TypeScript client for the Toogl Track API (v9). At the moment, only the following API References are supported:
+A TypeScript client for the Toggl Track API (v9). At the moment, only the following API References are supported:
 
 - [`Me`](https://developers.track.toggl.com/docs/api/me)
 - [`Time entry`](https://developers.track.toggl.com/docs/api/time_entry)

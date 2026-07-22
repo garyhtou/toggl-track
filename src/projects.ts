@@ -36,7 +36,7 @@ export class Projects {
 					body: {
 						labour_cost: body?.labourCost,
 						manager: body?.manager,
-						postedFields: body?.postedFields, // this is camalCase according to the API docs
+						postedFields: body?.postedFields, // this is camelCase according to the API docs
 						project_id: body?.projectId,
 						user_id: body?.userId,
 					},
@@ -82,7 +82,7 @@ export class Projects {
 					body: {
 						labour_cost: body?.labourCost,
 						manager: body?.manager,
-						postedFields: body?.postedFields, // this is camalCase according to the API docs
+						postedFields: body?.postedFields, // this is camelCase according to the API docs
 					},
 				}
 			);
@@ -129,7 +129,7 @@ export class Projects {
 		return this.toggl.request<IWorkspaceProject[]>(
 			`workspaces/${workspaceId}/projects`,
 			{
-				// NOTE: according to Toggl's API docs, everything here is camalCase
+				// NOTE: according to Toggl's API docs, everything here is camelCase
 				body,
 			}
 		);
