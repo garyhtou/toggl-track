@@ -14,6 +14,7 @@ export class TimeEntry {
 		since?: string;
 		startDate?: Date | string;
 		endDate?: Date | string;
+		includeMeta?: boolean;
 	}) {
 		return this.toggl.request<ITimeEntry[]>('me/time_entries', {
 			query: {
@@ -21,6 +22,7 @@ export class TimeEntry {
 				since: query?.since,
 				start_date: query?.startDate?.toString(),
 				end_date: query?.endDate?.toString(),
+				meta: query?.includeMeta ? 'true' : 'false',
 			},
 		});
 	}
@@ -170,6 +172,10 @@ export interface ITimeEntry {
 	user_id: number;
 	wid: number;
 	workspace_id: number;
+	client_name?: string; // NOTE: Only available if includeMeta: true in query.
+	project_name?: string; // NOTE: Only available if includeMeta: true in query.
+	project_color?: string; // NOTE: Only available if includeMeta: true in query.
+	project_active?: boolean; // NOTE: Only available if includeMeta: true in query.
 }
 
 export interface IUpdateBulkResponse {
