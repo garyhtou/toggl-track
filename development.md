@@ -14,7 +14,7 @@ https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package
 ## Release Process
 
 1. Update `README.md` if necessary
-2. `npm run lint`
-3. `npm run format`
-4. `npm version [major|minor|patch]`
-5. `npm publish`
+2. `yarn run lint`
+3. `yarn run format`
+4. `yarn version [major|minor|patch]`
+5. `yarn publish`
